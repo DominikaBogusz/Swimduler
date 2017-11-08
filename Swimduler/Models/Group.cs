@@ -14,8 +14,8 @@ namespace Swimduler.Models
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
-        public virtual ICollection<Client_Group> Client_Groups { get; private set; }
+        public virtual ICollection<Client_Group> Client_Groups { get; set; }
 
-        public virtual ICollection<Lesson> Lessons { get; private set; }
+        public virtual ICollection<Lesson> Lessons { get; set; }
     }
 }

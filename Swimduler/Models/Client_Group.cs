@@ -16,6 +16,6 @@ namespace Swimduler.Models
 
         [Required]
         public int GroupId { get; set; }
-        public virtual Client Group { get; set; }
+        public virtual Group Group { get; set; }
     }
 }

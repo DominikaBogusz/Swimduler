@@ -34,6 +34,6 @@ namespace Swimduler.Models
         [Display(Name = "Data urodzenia")]
         public DateTime BirthDate { get; set; }
 
-        public virtual ICollection<Client_Group> Client_Groups { get; private set; }
+        public virtual ICollection<Client_Group> Client_Groups { get; set; }
     }
 }

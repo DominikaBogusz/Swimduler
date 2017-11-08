@@ -1,5 +1,4 @@
-﻿using Itenso.TimePeriod;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,8 +16,16 @@ namespace Swimduler.Models
         [Display(Name = "Czas trwania")]
         public TimeSpan Duration { get; set; }
 
+        [EnumDataType(typeof(LessonCycle))]
         [Display(Name = "Cykl")]
-        public CalendarTimeRange LessonCycle { get; set; }
+        public LessonCycle Cycle { get; set; }
+
+        public enum LessonCycle
+        {
+            Week = 0,
+            TwoWeeks = 1,
+            Month = 2
+        }
 
         [Required]
         [EnumDataType(typeof(LessonStatus))]
@@ -35,6 +42,6 @@ namespace Swimduler.Models
 
         [Required]
         public int GroupId { get; set; }
-        public virtual Client Group { get; set; }
+        public virtual Group Group { get; set; }
     }
 }
