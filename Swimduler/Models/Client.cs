@@ -28,7 +28,13 @@ namespace Swimduler.Models
 
         [Required]
         [Display(Name = "Płeć")]
-        public string Gender { get; set; }
+        public GenderType Gender { get; set; }
+
+        public enum GenderType
+        {
+            Male = 0,
+            Female = 1
+        }
 
         [Required]
         [Display(Name = "Data urodzenia")]
