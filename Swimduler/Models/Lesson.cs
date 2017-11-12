@@ -22,9 +22,9 @@ namespace Swimduler.Models
 
         public enum LessonCycle
         {
-            Week = 0,
-            TwoWeeks = 1,
-            Month = 2
+            Tygodniowy = 0,
+            Dwutygodniowy = 1,
+            Miesięczny = 2
         }
 
         [Required]
@@ -34,10 +34,10 @@ namespace Swimduler.Models
 
         public enum LessonStatus
         {
-            Planned = 0,
-            Started = 1,
-            Completed = 2,
-            Canceled = 3
+            Zaplanowana = 0,
+            Rozpoczęta = 1,
+            Zakończona = 2,
+            Odwołana = 3
         }
 
         [Required]

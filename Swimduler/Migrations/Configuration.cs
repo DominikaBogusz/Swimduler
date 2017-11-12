@@ -72,18 +72,17 @@ namespace Swimduler.Migrations
 
         private void SeedTrainers(ApplicationDbContext context)
         {
-            for (int i = 0; i < 10; i++)
+            var trainer = new Trainer
             {
-                var trainer = new Trainer
-                {
-                    Id = i,
-                    FirstName = "TrainerName" + i.ToString(),
-                    SecondName = "TrainerSurname" + i.ToString(),
-                    Address = "Street T " + i.ToString(),
-                    PhoneNumber = "66666666" + i.ToString()
-                };
-                context.Trainers.AddOrUpdate(trainer);
-            }
+                Id = 0,
+                FirstName = "TrainerName",
+                SecondName = "TrainerSurname",
+                Street = "TrainerStreet",
+                ApartmentNumber = "666",
+                PostCode = "66-666 Hell",
+                PhoneNumber = "666666666"
+            };
+            context.Trainers.AddOrUpdate(trainer);
             context.SaveChanges();
         }
 
@@ -96,10 +95,12 @@ namespace Swimduler.Migrations
                     Id = i,
                     FirstName = "ClientName" + i.ToString(),
                     SecondName = "ClientSurname" + i.ToString(),
-                    Address = "Street C " + i.ToString(),
+                    Street = "ClientStreet" + i.ToString(),
+                    ApartmentNumber = "77" + i.ToString(),
+                    PostCode = "77-77" + i.ToString() + " Hell",
                     PhoneNumber = "77777777" + i.ToString(),
-                    Gender = (i % 2 == 0 ? Client.GenderType.Male : Client.GenderType.Female),
-                    BirthDate = DateTime.Now.AddYears(i)
+                    Gender = (i % 2 == 0 ? Client.GenderType.Mê¿czyzna : Client.GenderType.Kobieta),
+                    BirthDate = DateTime.Now.AddYears(-30 + i)
                 };
                 context.Clients.AddOrUpdate(client);
             }
@@ -148,8 +149,8 @@ namespace Swimduler.Migrations
                 {
                     Beginning = DateTime.Now.AddDays(i),
                     Duration = TimeSpan.FromHours(1.5),
-                    Cycle = (i % 2 == 0 ? Lesson.LessonCycle.Week : Lesson.LessonCycle.TwoWeeks),
-                    Status = Lesson.LessonStatus.Planned,
+                    Cycle = (i % 2 == 0 ? Lesson.LessonCycle.Tygodniowy : Lesson.LessonCycle.Dwutygodniowy),
+                    Status = Lesson.LessonStatus.Zaplanowana,
                     GroupId = groupId
                 };
                 context.Lessons.AddOrUpdate(lesson);

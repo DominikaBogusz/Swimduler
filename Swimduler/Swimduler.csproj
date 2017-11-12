@@ -199,7 +199,12 @@
     <Compile Include="Migrations\201711080637133_Initial.Designer.cs">
       <DependentUpon>201711080637133_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711121034426_PersonBaseClassAdded.cs" />
+    <Compile Include="Migrations\201711121034426_PersonBaseClassAdded.Designer.cs">
+      <DependentUpon>201711121034426_PersonBaseClassAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Views\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Client.cs" />
@@ -292,6 +297,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711080637133_Initial.resx">
       <DependentUpon>201711080637133_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711121034426_PersonBaseClassAdded.resx">
+      <DependentUpon>201711121034426_PersonBaseClassAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
