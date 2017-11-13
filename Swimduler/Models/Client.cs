@@ -25,5 +25,8 @@ namespace Swimduler.Models
         public DateTime BirthDate { get; set; }
 
         public virtual ICollection<Client_Group> Client_Groups { get; set; }
+
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

@@ -20,8 +20,8 @@ namespace Swimduler.Migrations
             //  This method will be called after migrating to the latest version.
 
             // Do debugowania metody seed
-            // if (System.Diagnostics.Debugger.IsAttached == false)
-            // System.Diagnostics.Debugger.Launch();
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //    System.Diagnostics.Debugger.Launch();
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
@@ -35,8 +35,8 @@ namespace Swimduler.Migrations
             //
 
             SeedRoles(context);
-            SeedUsers(context);
-            SeedTrainers(context);
+            string adminId = SeedAdmin(context);
+            SeedTrainers(context, adminId);
             SeedClients(context);
             SeedGroups(context);
             SeedClient_Groups(context);
@@ -55,22 +55,31 @@ namespace Swimduler.Migrations
             }
         }
 
-        private void SeedUsers(ApplicationDbContext context)
+        private string SeedAdmin(ApplicationDbContext context)
         {
-            var store = new UserStore<ApplicationUser>(context);
-            var manager = new UserManager<ApplicationUser>(store);
-            if (!context.Users.Any(u => u.UserName == "Admin"))
+            var userStore = new UserStore<ApplicationUser>(context);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            var adminUser = context.Users.FirstOrDefault(u => u.UserName == "Admin");
+            if (adminUser == null)
             {
-                var user = new ApplicationUser { UserName = "Admin" };
-                var adminresult = manager.Create(user, "666777");
-                if (adminresult.Succeeded)
+                string newAdminPassword = "123QQQq!";
+                var newAdminUser = new ApplicationUser
                 {
-                    manager.AddToRole(user.Id, "Admin");
+                    Email = "admin@admin.com",
+                    UserName = "admin@admin.com"
+                };
+                var adminResult = userManager.Create(newAdminUser, newAdminPassword);
+                if (adminResult.Succeeded)
+                {
+                    userManager.AddToRole(newAdminUser.Id, "Admin");
                 }
+                return newAdminUser.Id;
             }
+            return adminUser.Id;
         }
 
-        private void SeedTrainers(ApplicationDbContext context)
+        private void SeedTrainers(ApplicationDbContext context, string adminUserId)
         {
             var trainer = new Trainer
             {
@@ -80,7 +89,8 @@ namespace Swimduler.Migrations
                 Street = "TrainerStreet",
                 ApartmentNumber = "666",
                 PostCode = "66-666 Hell",
-                PhoneNumber = "666666666"
+                PhoneNumber = "666666666",
+                AdminUserID = adminUserId
             };
             context.Trainers.AddOrUpdate(trainer);
             context.SaveChanges();
