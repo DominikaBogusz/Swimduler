@@ -12,8 +12,6 @@ namespace Swimduler.Models
         public ApplicationDbContext()
             : base("DefaultConnection")
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
-
             //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
             //OR CreateDatabaseIfNotExists OR DropCreateDatabaseAlways
         }
