@@ -6,8 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Swimduler.Models;
 
-namespace Swimduler.Models
+namespace Swimduler.Controllers
 {
     public class GroupsController : Controller
     {

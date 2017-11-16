@@ -22,7 +22,7 @@ namespace Swimduler.Controllers
         }
 
         // GET: Lessons/Details/5
-        public ActionResult Details(DateTime id)
+        public ActionResult Details(long? id)
         {
             if (id == null)
             {
@@ -48,7 +48,7 @@ namespace Swimduler.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Beginning,Duration,Cycle,Status,GroupId")] Lesson lesson)
+        public ActionResult Create([Bind(Include = "Id,Beginning,Duration,Cycle,Status,GroupId")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace Swimduler.Controllers
         }
 
         // GET: Lessons/Edit/5
-        public ActionResult Edit(DateTime id)
+        public ActionResult Edit(long? id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@ namespace Swimduler.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Beginning,Duration,Cycle,Status,GroupId")] Lesson lesson)
+        public ActionResult Edit([Bind(Include = "Id,Beginning,Duration,Cycle,Status,GroupId")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace Swimduler.Controllers
         }
 
         // GET: Lessons/Delete/5
-        public ActionResult Delete(DateTime id)
+        public ActionResult Delete(long? id)
         {
             if (id == null)
             {
@@ -112,7 +112,7 @@ namespace Swimduler.Controllers
         // POST: Lessons/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(DateTime id)
+        public ActionResult DeleteConfirmed(long id)
         {
             Lesson lesson = db.Lessons.Find(id);
             db.Lessons.Remove(lesson);

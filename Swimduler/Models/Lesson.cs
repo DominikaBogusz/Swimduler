@@ -8,7 +8,8 @@ namespace Swimduler.Models
 {
     public class Lesson
     {
-        [Key]
+        public long Id { get; set; }
+
         [Display(Name = "Rozpoczęcie")]
         public DateTime Beginning { get; set; }
 
