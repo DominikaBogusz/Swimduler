@@ -10,7 +10,6 @@ namespace Swimduler.Models
     public class Trainer : Person
     {
         [Required]
-        public string ApplicationUserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public string AdminUserId { get; set; }
     }
 }
