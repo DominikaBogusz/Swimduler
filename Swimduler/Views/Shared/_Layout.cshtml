@@ -22,9 +22,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Informacje", "About", "Home")</li>
-                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Klienci", "Index", "Clients")</li>
                     <li>@Html.ActionLink("Lekcje", "Index", "Lessons")</li>
                     <li>@Html.ActionLink("Grupy", "Index", "Groups")</li>
@@ -37,7 +34,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year — moja aplikacja platformy ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year — Swimduler</p>
         </footer>
     </div>
 
