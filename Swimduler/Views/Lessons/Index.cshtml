@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Swimduler.Models.Lesson>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Spis lekcji";
 }
 
-<h2>Index</h2>
+<h2>Spis lekcji</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Dodaj nową lekcję", "Create")
 </p>
 <table class="table">
     <tr>
@@ -19,12 +19,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cycle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
         </th>
         <th></th>
     </tr>
@@ -41,15 +35,9 @@
             @Html.DisplayFor(modelItem => item.Duration)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Cycle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
         </td>
     </tr>
 }

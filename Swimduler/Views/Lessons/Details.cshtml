@@ -1,13 +1,13 @@
 ﻿@model Swimduler.Models.Lesson
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Szczegóły wybranej lekcji";
 }
 
-<h2>Details</h2>
+<h2>Szczegóły wybranej lekcji</h2>
 
 <div>
-    <h4>Lesson</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -53,6 +53,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edytuj", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Wróć do listy", "Index")
 </p>

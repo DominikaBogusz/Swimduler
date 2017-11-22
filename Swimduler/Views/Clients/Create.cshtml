@@ -1,17 +1,17 @@
 ﻿@model Swimduler.Models.Client
 
 @{
-    ViewBag.Title = "Utwórz nowego klienta";
+    ViewBag.Title = "Tworzenie nowego klienta";
 }
 
-<h2>Create</h2>
+<h2>Tworzenie nowego klienta</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Client</h4>
+        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -89,7 +89,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Dodaj" class="btn btn-default" />
             </div>
         </div>
     </div>

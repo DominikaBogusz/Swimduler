@@ -11,7 +11,7 @@ namespace Swimduler.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Nazwa")]
+        [Display(Name = "Grupa")]
         public string Name { get; set; }
 
         public virtual ICollection<Client_Group> Client_Groups { get; set; }
