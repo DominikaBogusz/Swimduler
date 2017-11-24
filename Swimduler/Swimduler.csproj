@@ -215,6 +215,7 @@
       <DependentUpon>201711200904574_ErrorHandling.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CalendarEvent.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Views\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />

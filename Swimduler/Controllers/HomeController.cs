@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Swimduler.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,6 +26,15 @@ namespace Swimduler.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public JsonResult GetEvents()
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var events = db.CalendarEvents.ToList();
+                return new JsonResult { Data = events, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
         }
     }
 }

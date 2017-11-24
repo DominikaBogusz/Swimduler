@@ -34,13 +34,13 @@ namespace Swimduler.Migrations
             //    );
             //
 
-            SeedRoles(context);
-            string adminId = SeedAdmin(context);
-            SeedTrainers(context, adminId);
-            SeedClients(context);
-            SeedGroups(context);
-            SeedClient_Groups(context);
-            SeedLessons(context);
+            //SeedRoles(context);
+            //string adminId = SeedAdmin(context);
+            //SeedTrainers(context, adminId);
+            //SeedClients(context);
+            //SeedGroups(context);
+            //SeedClient_Groups(context);
+            //SeedLessons(context);
         }
 
         private void SeedRoles(ApplicationDbContext context)

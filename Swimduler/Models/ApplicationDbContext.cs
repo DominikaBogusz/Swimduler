@@ -26,5 +26,6 @@ namespace Swimduler.Models
         public DbSet<Group> Groups { get; set; }
         public DbSet<Client_Group> Client_Groups { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<CalendarEvent> CalendarEvents { get; set; }
     }
 }
