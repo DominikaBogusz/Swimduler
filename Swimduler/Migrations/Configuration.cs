@@ -41,6 +41,7 @@ namespace Swimduler.Migrations
             //SeedGroups(context);
             //SeedClient_Groups(context);
             //SeedLessons(context);
+            //SeedCalendarEvents(context);
         }
 
         private void SeedRoles(ApplicationDbContext context)
@@ -163,6 +164,31 @@ namespace Swimduler.Migrations
                     GroupId = groupId
                 };
                 context.Lessons.AddOrUpdate(lesson);
+            }
+            context.SaveChanges();
+        }
+
+        private void SeedCalendarEvents(ApplicationDbContext context)
+        {
+            string[] colors = { "green", "red", "yellow", "blue", "brown", "orange" };
+
+            var lessons = context.Lessons.Include("Group").ToList();
+
+            foreach(Lesson l in lessons)
+            {
+                var calendarEvent = new CalendarEvent
+                {
+                    Subject = l.Group.Name,
+                    Description = "Czas trwania: " + l.Duration + ",\n" +
+                                    "cykl lekcji:" + l.Cycle + ",\n" +
+                                    "status: " + l.Status.ToString() + ",\n" +
+                                    "wielkoœæ grupy:" + l.Group.Client_Groups.Count,
+                    Start = l.Beginning,
+                    End = l.Beginning + l.Duration,
+                    ThemeColor = colors[new Random().Next(0, colors.Length)],
+                    IsFullDay = false
+                };
+                context.CalendarEvents.AddOrUpdate(calendarEvent);
             }
             context.SaveChanges();
         }

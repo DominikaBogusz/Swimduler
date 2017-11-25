@@ -36,5 +36,52 @@ namespace Swimduler.Controllers
                 return new JsonResult { Data = events, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
         }
+
+        [HttpPost]
+        public JsonResult SaveEvent(CalendarEvent calendarEvent)
+        {
+            var status = false;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                if (calendarEvent.Id > 0)
+                {
+                    //Update the event
+                    var reqEvent = db.CalendarEvents.Where(x => x.Id == calendarEvent.Id).FirstOrDefault();
+                    if (reqEvent != null)
+                    {
+                        reqEvent.Subject = calendarEvent.Subject;
+                        reqEvent.Start = calendarEvent.Start;
+                        reqEvent.End = calendarEvent.End;
+                        reqEvent.Description = calendarEvent.Description;
+                        reqEvent.ThemeColor = calendarEvent.ThemeColor;
+                        reqEvent.IsFullDay = calendarEvent.IsFullDay;
+                    }
+                }
+                else
+                {
+                    db.CalendarEvents.Add(calendarEvent);
+                }
+                db.SaveChanges();
+                status = true;
+            }
+            return new JsonResult { Data = new { status = status } };
+        }
+
+        [HttpPost]
+        public JsonResult DeleteEvent(int eventID)
+        {
+            var status = false;
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var reqEvent = db.CalendarEvents.Where(x => x.Id == eventID).FirstOrDefault();
+                if (reqEvent != null)
+                {
+                    db.CalendarEvents.Remove(reqEvent);
+                    db.SaveChanges();
+                    status = true;
+                }
+            }
+            return new JsonResult { Data = new { status = status } };
+        }
     }
 }
