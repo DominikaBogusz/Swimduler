@@ -44,153 +44,153 @@ namespace Swimduler.Migrations
             //SeedCalendarEvents(context);
         }
 
-        private void SeedRoles(ApplicationDbContext context)
-        {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
-            if (!roleManager.RoleExists("Admin"))
-            {
-                var role = new IdentityRole();
-                role.Name = "Admin";
-                roleManager.Create(role);
-            }
-        }
+    //    private void SeedRoles(ApplicationDbContext context)
+    //    {
+    //        var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
+    //        if (!roleManager.RoleExists("Admin"))
+    //        {
+    //            var role = new IdentityRole();
+    //            role.Name = "Admin";
+    //            roleManager.Create(role);
+    //        }
+    //    }
 
-        private string SeedAdmin(ApplicationDbContext context)
-        {
-            var userStore = new UserStore<ApplicationUser>(context);
-            var userManager = new UserManager<ApplicationUser>(userStore);
+    //    private string SeedAdmin(ApplicationDbContext context)
+    //    {
+    //        var userStore = new UserStore<ApplicationUser>(context);
+    //        var userManager = new UserManager<ApplicationUser>(userStore);
 
-            var adminUser = context.Users.FirstOrDefault(u => u.UserName == "Admin");
-            if (adminUser == null)
-            {
-                string newAdminPassword = "123QQQq!";
-                var newAdminUser = new ApplicationUser
-                {
-                    Email = "admin@admin.com",
-                    UserName = "admin@admin.com"
-                };
-                var adminResult = userManager.Create(newAdminUser, newAdminPassword);
-                if (adminResult.Succeeded)
-                {
-                    userManager.AddToRole(newAdminUser.Id, "Admin");
-                }
-                return newAdminUser.Id;
-            }
-            return adminUser.Id;
-        }
+    //        var adminUser = context.Users.FirstOrDefault(u => u.UserName == "Admin");
+    //        if (adminUser == null)
+    //        {
+    //            string newAdminPassword = "123QQQq!";
+    //            var newAdminUser = new ApplicationUser
+    //            {
+    //                Email = "admin@admin.com",
+    //                UserName = "admin@admin.com"
+    //            };
+    //            var adminResult = userManager.Create(newAdminUser, newAdminPassword);
+    //            if (adminResult.Succeeded)
+    //            {
+    //                userManager.AddToRole(newAdminUser.Id, "Admin");
+    //            }
+    //            return newAdminUser.Id;
+    //        }
+    //        return adminUser.Id;
+    //    }
 
-        private void SeedTrainers(ApplicationDbContext context, string adminUserId)
-        {
-            var trainer = new Trainer
-            {
-                Id = 0,
-                FirstName = "TrainerName",
-                SecondName = "TrainerSurname",
-                Street = "TrainerStreet",
-                ApartmentNumber = "666",
-                PostCode = "66-666 Hell",
-                PhoneNumber = "666666666",
-                AdminUserId = adminUserId
-            };
-            context.Trainers.AddOrUpdate(trainer);
-            context.SaveChanges();
-        }
+    //    private void SeedTrainers(ApplicationDbContext context, string adminUserId)
+    //    {
+    //        var trainer = new Trainer
+    //        {
+    //            Id = 0,
+    //            FirstName = "TrainerName",
+    //            SecondName = "TrainerSurname",
+    //            Street = "TrainerStreet",
+    //            ApartmentNumber = "666",
+    //            PostCode = "66-666 Hell",
+    //            PhoneNumber = "666666666",
+    //            AdminUserId = adminUserId
+    //        };
+    //        context.Trainers.AddOrUpdate(trainer);
+    //        context.SaveChanges();
+    //    }
 
-        private void SeedClients(ApplicationDbContext context)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                var client = new Client
-                {
-                    Id = i,
-                    FirstName = "ClientName" + i.ToString(),
-                    SecondName = "ClientSurname" + i.ToString(),
-                    Street = "ClientStreet" + i.ToString(),
-                    ApartmentNumber = "77" + i.ToString(),
-                    PostCode = "77-77" + i.ToString() + " Hell",
-                    PhoneNumber = "77777777" + i.ToString(),
-                    Gender = (i % 2 == 0 ? Client.GenderType.Mê¿czyzna : Client.GenderType.Kobieta),
-                    BirthDate = DateTime.Now.AddYears(-30 + i)
-                };
-                context.Clients.AddOrUpdate(client);
-            }
-            context.SaveChanges();
-        }
+    //    private void SeedClients(ApplicationDbContext context)
+    //    {
+    //        for (int i = 0; i < 10; i++)
+    //        {
+    //            var client = new Client
+    //            {
+    //                Id = i,
+    //                FirstName = "ClientName" + i.ToString(),
+    //                SecondName = "ClientSurname" + i.ToString(),
+    //                Street = "ClientStreet" + i.ToString(),
+    //                ApartmentNumber = "77" + i.ToString(),
+    //                PostCode = "77-77" + i.ToString() + " Hell",
+    //                PhoneNumber = "77777777" + i.ToString(),
+    //                Gender = (i % 2 == 0 ? Client.GenderType.Mê¿czyzna : Client.GenderType.Kobieta),
+    //                BirthDate = DateTime.Now.AddYears(-30 + i)
+    //            };
+    //            context.Clients.AddOrUpdate(client);
+    //        }
+    //        context.SaveChanges();
+    //    }
 
-        private void SeedGroups(ApplicationDbContext context)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                var group = new Group
-                {
-                    Id = i,
-                    Name = "GroupName" + i.ToString()
-                };
-                context.Groups.AddOrUpdate(group);
-            }
-            context.SaveChanges();
-        }
+    //    private void SeedGroups(ApplicationDbContext context)
+    //    {
+    //        for (int i = 0; i < 10; i++)
+    //        {
+    //            var group = new Group
+    //            {
+    //                Id = i,
+    //                Name = "GroupName" + i.ToString()
+    //            };
+    //            context.Groups.AddOrUpdate(group);
+    //        }
+    //        context.SaveChanges();
+    //    }
 
-        private void SeedClient_Groups(ApplicationDbContext context)
-        {
-            var clientId = context.Clients.FirstOrDefault().Id;
-            var groupId = context.Groups.FirstOrDefault().Id;
+    //    private void SeedClient_Groups(ApplicationDbContext context)
+    //    {
+    //        var clientId = context.Clients.FirstOrDefault().Id;
+    //        var groupId = context.Groups.FirstOrDefault().Id;
 
-            for (int i = 0; i < 10; i++)
-            {
-                var clinet_group = new Client_Group
-                {
-                    Id = i,
-                    ClientId = clientId,
-                    GroupId = groupId
-                };
-                context.Client_Groups.AddOrUpdate(clinet_group);
-            }
-            context.SaveChanges();
-        }
+    //        for (int i = 0; i < 10; i++)
+    //        {
+    //            var clinet_group = new Client_Group
+    //            {
+    //                Id = i,
+    //                ClientId = clientId,
+    //                GroupId = groupId
+    //            };
+    //            context.Client_Groups.AddOrUpdate(clinet_group);
+    //        }
+    //        context.SaveChanges();
+    //    }
 
-        private void SeedLessons(ApplicationDbContext context)
-        {
-            var groupId = context.Groups.FirstOrDefault().Id;
+    //    private void SeedLessons(ApplicationDbContext context)
+    //    {
+    //        var groupId = context.Groups.FirstOrDefault().Id;
 
-            for (int i = 0; i < 10; i++)
-            {
-                var lesson = new Lesson
-                {
-                    Beginning = DateTime.Now.AddDays(i),
-                    Duration = TimeSpan.FromHours(1.5),
-                    Cycle = (i % 2 == 0 ? Lesson.LessonCycle.Tygodniowy : Lesson.LessonCycle.Dwutygodniowy),
-                    Status = Lesson.LessonStatus.Zaplanowana,
-                    GroupId = groupId
-                };
-                context.Lessons.AddOrUpdate(lesson);
-            }
-            context.SaveChanges();
-        }
+    //        for (int i = 0; i < 10; i++)
+    //        {
+    //            var lesson = new Lesson
+    //            {
+    //                Beginning = DateTime.Now.AddDays(i),
+    //                Duration = TimeSpan.FromHours(1.5),
+    //                Cycle = (i % 2 == 0 ? Lesson.LessonCycle.Tygodniowy : Lesson.LessonCycle.Dwutygodniowy),
+    //                Status = Lesson.LessonStatus.Zaplanowana,
+    //                GroupId = groupId
+    //            };
+    //            context.Lessons.AddOrUpdate(lesson);
+    //        }
+    //        context.SaveChanges();
+    //    }
 
-        private void SeedCalendarEvents(ApplicationDbContext context)
-        {
-            string[] colors = { "green", "red", "yellow", "blue", "brown", "orange" };
+    //    private void SeedCalendarEvents(ApplicationDbContext context)
+    //    {
+    //        string[] colors = { "green", "red", "yellow", "blue", "brown", "orange" };
 
-            var lessons = context.Lessons.Include("Group").ToList();
+    //        var lessons = context.Lessons.Include("Group").ToList();
 
-            foreach(Lesson l in lessons)
-            {
-                var calendarEvent = new CalendarEvent
-                {
-                    Subject = l.Group.Name,
-                    Description = "Czas trwania: " + l.Duration + ",\n" +
-                                    "cykl lekcji:" + l.Cycle + ",\n" +
-                                    "status: " + l.Status.ToString() + ",\n" +
-                                    "wielkoœæ grupy:" + l.Group.Client_Groups.Count,
-                    Start = l.Beginning,
-                    End = l.Beginning + l.Duration,
-                    ThemeColor = colors[new Random().Next(0, colors.Length)],
-                    IsFullDay = false
-                };
-                context.CalendarEvents.AddOrUpdate(calendarEvent);
-            }
-            context.SaveChanges();
-        }
+    //        foreach(Lesson l in lessons)
+    //        {
+    //            var calendarEvent = new CalendarEvent
+    //            {
+    //                Subject = l.Group.Name,
+    //                Description = "Czas trwania: " + l.Duration + ",\n" +
+    //                                "cykl lekcji:" + l.Cycle + ",\n" +
+    //                                "status: " + l.Status.ToString() + ",\n" +
+    //                                "wielkoœæ grupy:" + l.Group.Client_Groups.Count,
+    //                Start = l.Beginning,
+    //                End = l.Beginning + l.Duration,
+    //                ThemeColor = colors[new Random().Next(0, colors.Length)],
+    //                IsFullDay = false
+    //            };
+    //            context.CalendarEvents.AddOrUpdate(calendarEvent);
+    //        }
+    //        context.SaveChanges();
+    //    }
     }
 }
