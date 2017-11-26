@@ -18,15 +18,15 @@
             </div>
             <div class="modal-body">
                 <button id="btnDelete" class="btn btn-default btn-sm pull-right">
-                    <span class="glyphicon glyphicon-remove"></span> Remove
+                    <span class="glyphicon glyphicon-remove"></span> Usuń
                 </button>
                 <button id="btnEdit" class="btn btn-default btn-sm pull-right" style="margin-right:5px;">
-                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                    <span class="glyphicon glyphicon-pencil"></span> Edytuj
                 </button>
                 <p id="pDetails"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
             </div>
         </div>
     </div>
@@ -37,17 +37,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Save Event</h4>
+                <h4 class="modal-title">Zapisz wydarzenie</h4>
             </div>
             <div class="modal-body">
                 <form class="col-md-12 form-horizontal">
                     <input type="hidden" id="hdEventID" value="0" />
                     <div class="form-group">
-                        <label>Subject</label>
+                        <label>Nazwa wydarzenia</label>
                         <input type="text" id="txtSubject" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label>Start</label>
+                        <label>Początek</label>
                         <div class="input-group date" id="dtp1">
                             <input type="text" id="txtStart" class="form-control" />
                             <span class="input-group-addon">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>End</label>
+                        <label>Koniec</label>
                         <div class="input-group date" id="dtp2">
                             <input type="text" id="txtEnd" class="form-control" />
                             <span class="input-group-addon">
@@ -65,21 +65,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                        <label>Uwagi</label>
+                        <textarea id="txtComments" rows="3" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Theme Color</label>
+                        <label>Kolor</label>
                         <select id="ddThemeColor" class="form-control">
-                            <option value="">Default</option>
-                            <option value="red">Red</option>
-                            <option value="blue">Blue</option>
-                            <option value="black">Black</option>
-                            <option value="green">Green</option>
+                            <option value="">Domyślny</option>
+                            <option value="red">Czerwony</option>
+                            <option value="blue">Niebieski</option>
+                            <option value="black">Czarny</option>
+                            <option value="green">Zielony</option>
                         </select>
                     </div>
-                    <button type="button" id="btnSave" class="btn btn-success">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSave" class="btn btn-success">Zapisz</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
                 </form>
             </div>
         </div>
@@ -111,17 +111,16 @@
                                 events.push({
                                     eventID: v.Id,
                                     title: v.Subject,
-                                    description: v.Description,
+                                    comments: v.Comments,
                                     start: moment(v.Start),
                                     end: moment(v.End),
                                     color: v.ThemeColor
                                 });
                             })
-
                             GenerateCalendar(events);
                         },
                         error: function (error) {
-                            alert('failed');
+                            alert('Coś się spierniczyło');
                         }
                     })
                 }
@@ -144,12 +143,11 @@
                         eventClick: function (calEvent, jsEvent, view) {
                             selectedEvent = calEvent;
                             $('#calendarModal #eventTitle').text(calEvent.title);
-                            var $description = $('<div/>');
-                            $description.append($('<p/>').html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm")));
-                            $description.append($('<p/>').html('<b>End:</b>' + calEvent.end.format("DD-MMM-YYYY HH:mm")));
-                            $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
-                            $('#calendarModal #pDetails').empty().html($description);
-
+                            var $details = $('<div/>');
+                            $details.append($('<p/>').html('<b>Początek: </b>' + calEvent.start.format("DD-MMM-YYYY HH:mm")));
+                            $details.append($('<p/>').html('<b>Koniec: </b>' + calEvent.end.format("DD-MMM-YYYY HH:mm")));
+                            $details.append($('<p/>').html('<b>Uwagi: </b>' + (calEvent.comments == null ? '(brak)' : calEvent.comments)));
+                            $('#calendarModal #pDetails').empty().html($details);
                             $('#calendarModal').modal();
                         },
                         selectable: true,
@@ -157,7 +155,7 @@
                             selectedEvent = {
                                 eventID: 0,
                                 title: '',
-                                description: '',
+                                comments: '',
                                 start: start,
                                 end: end,
                                 color: ''
@@ -172,7 +170,7 @@
                                 Subject: event.title,
                                 Start: event.start.format("DD-MMM-YYYY HH:mm"),
                                 End: event.end.format("DD-MMM-YYYY HH:mm"),
-                                Description: event.description,
+                                Comments: event.comments,
                                 ThemeColor: event.color
                             };
                             SaveEvent(data);
@@ -184,7 +182,7 @@
                     openAddEditForm();
                 })
                 $('#btnDelete').click(function () {
-                    if (selectedEvent != null && confirm('Are you sure?')) {
+                    if (selectedEvent != null && confirm('Jesteś pewien, że chcesz usunąć to wydarzenie?')) {
                         $.ajax({
                             type: "POST",
                             url: '/home/DeleteEvent',
@@ -196,13 +194,13 @@
                                 }
                             },
                             error: function () {
-                                alert('Failed');
+                                alert('Coś się spierniczyło');
                             }
                         })
                     }
                 })
                 $('#dtp1,#dtp2').datetimepicker({
-                    format: 'DD/MM/YYYY HH:mm A'
+                    format: 'DD-MMM-YYYY HH:mm'
                 });
                 function openAddEditForm() {
                     if (selectedEvent != null) {
@@ -210,7 +208,7 @@
                         $('#txtSubject').val(selectedEvent.title);
                         $('#txtStart').val(selectedEvent.start.format("DD-MMM-YYYY HH:mm"));
                         $('#txtEnd').val(selectedEvent.end.format("DD-MMM-YYYY HH:mm"));
-                        $('#txtDescription').val(selectedEvent.description);
+                        $('#txtComments').val(selectedEvent.comments);
                         $('#ddThemeColor').val(selectedEvent.color);
                     }
                     $('#calendarModal').modal('hide');
@@ -218,18 +216,22 @@
                 }
                 $('#btnSave').click(function () {
                     if ($('#txtSubject').val().trim() == "") {
-                        alert('Subject required');
+                        alert('Nazwa wydarzenia jest wymagana');
                         return;
                     }
                     if ($('#txtStart').val().trim() == "") {
-                        alert('Start date required');
+                        alert('Data rozpoczęcia jest wymagana');
+                        return;
+                    }
+                    if ($('#txtEnd').val().trim() == "") {
+                        alert('Data zakończenia jest wymagana');
                         return;
                     }
                     else {
-                        var startDate = moment($('#txtStart').val(), "DD- MMM - YYYY HH:mm").toDate();
+                        var startDate = moment($('#txtStart').val(), "DD-MMM-YYYY HH:mm").toDate();
                         var endDate = moment($('#txtEnd').val(), "DD-MMM-YYYY HH:mm").toDate();
                         if (startDate > endDate) {
-                            alert('Invalid end date');
+                            alert('Nieprawidłowa data zakończenia');
                             return;
                         }
                     }
@@ -239,7 +241,7 @@
                         Subject: $('#txtSubject').val().trim(),
                         Start: $('#txtStart').val().trim(),
                         End: $('#txtEnd').val().trim(),
-                        Description: $('#txtDescription').val(),
+                        Comments: $('#txtComments').val(),
                         ThemeColor: $('#ddThemeColor').val()
                     }
                     SaveEvent(data);
@@ -256,7 +258,7 @@
                             }
                         },
                         error: function () {
-                            alert('Failed');
+                            alert('Coś się spierniczyło');
                         }
                     })
                 }

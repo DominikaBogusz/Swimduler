@@ -13,7 +13,7 @@ namespace Swimduler.Models
         [Required]
         public string Subject { get; set; }
 
-        public string Description { get; set; }
+        public string Comments { get; set; }
 
         [Required]
         public DateTime Start { get; set; }
@@ -22,5 +22,8 @@ namespace Swimduler.Models
         public DateTime End { get; set; }
 
         public string ThemeColor { get; set; }
+
+        public int LessonId { get; set; }
+        public virtual Lesson Lesson { get; set; }
     }
 }

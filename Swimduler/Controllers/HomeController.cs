@@ -45,14 +45,13 @@ namespace Swimduler.Controllers
             {
                 if (calendarEvent.Id > 0)
                 {
-                    //Update the event
                     var reqEvent = db.CalendarEvents.Where(x => x.Id == calendarEvent.Id).FirstOrDefault();
                     if (reqEvent != null)
                     {
                         reqEvent.Subject = calendarEvent.Subject;
                         reqEvent.Start = calendarEvent.Start;
                         reqEvent.End = calendarEvent.End;
-                        reqEvent.Description = calendarEvent.Description;
+                        reqEvent.Comments = calendarEvent.Comments;
                         reqEvent.ThemeColor = calendarEvent.ThemeColor;
                     }
                 }

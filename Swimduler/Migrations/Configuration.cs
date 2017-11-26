@@ -179,7 +179,7 @@ namespace Swimduler.Migrations
     //            var calendarEvent = new CalendarEvent
     //            {
     //                Subject = l.Group.Name,
-    //                Description = "Czas trwania: " + l.Duration + ",\n" +
+    //                Comments = "Czas trwania: " + l.Duration + ",\n" +
     //                                "cykl lekcji:" + l.Cycle + ",\n" +
     //                                "status: " + l.Status.ToString() + ",\n" +
     //                                "wielkoœæ grupy:" + l.Group.Client_Groups.Count,

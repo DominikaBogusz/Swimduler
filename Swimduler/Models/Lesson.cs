@@ -47,9 +47,14 @@ namespace Swimduler.Models
             Odwołana = 3
         }
 
+        [Display(Name = "Uwagi")]
+        public string Comments { get; set; }
+
         [Required]
         public int GroupId { get; set; }
         public virtual Group Group { get; set; }
+
+        public virtual ICollection<CalendarEvent> CalendarEvents { get; set; }
     }
 
     public class ValidateDateRange : ValidationAttribute
