@@ -54,7 +54,6 @@ namespace Swimduler.Controllers
                         reqEvent.End = calendarEvent.End;
                         reqEvent.Description = calendarEvent.Description;
                         reqEvent.ThemeColor = calendarEvent.ThemeColor;
-                        reqEvent.IsFullDay = calendarEvent.IsFullDay;
                     }
                 }
                 else

@@ -185,8 +185,7 @@ namespace Swimduler.Migrations
     //                                "wielkoœæ grupy:" + l.Group.Client_Groups.Count,
     //                Start = l.Beginning,
     //                End = l.Beginning + l.Duration,
-    //                ThemeColor = colors[new Random().Next(0, colors.Length)],
-    //                IsFullDay = false
+    //                ThemeColor = colors[new Random().Next(0, colors.Length)]
     //            };
     //            context.CalendarEvents.AddOrUpdate(calendarEvent);
     //        }
