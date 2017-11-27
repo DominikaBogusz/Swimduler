@@ -72,10 +72,11 @@
                         <label>Kolor</label>
                         <select id="ddThemeColor" class="form-control">
                             <option value="">Domyślny</option>
+                            <option value="green">Zielony</option>
                             <option value="red">Czerwony</option>
                             <option value="blue">Niebieski</option>
+                            <option value="yellow">Żółty</option>
                             <option value="black">Czarny</option>
-                            <option value="green">Zielony</option>
                         </select>
                     </div>
                     <button type="button" id="btnSave" class="btn btn-success">Zapisz</button>
@@ -138,7 +139,7 @@
                         },
                         allDaySlot: false,
                         eventLimit: true,
-                        eventColor: '#378006',
+                        eventColor: 'gray',
                         events: events,
                         eventClick: function (calEvent, jsEvent, view) {
                             selectedEvent = calEvent;

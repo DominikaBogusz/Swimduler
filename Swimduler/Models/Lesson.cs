@@ -8,7 +8,7 @@ namespace Swimduler.Models
 {
     public class Lesson
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [ValidateDateRange("1/1/2000", "1/1/2050")]
@@ -34,21 +34,8 @@ namespace Swimduler.Models
             Miesięczny = 3
         }
 
-        [Required]
-        [EnumDataType(typeof(LessonStatus))]
-        [Display(Name = "Status")]
-        public LessonStatus Status { get; set; }
-
-        public enum LessonStatus
-        {
-            Zaplanowana = 0,
-            Rozpoczęta = 1,
-            Zakończona = 2,
-            Odwołana = 3
-        }
-
-        [Display(Name = "Uwagi")]
-        public string Comments { get; set; }
+        [Display(Name = "Kolor w kalendarzu")]
+        public string ThemeColor { get; set; }
 
         [Required]
         public int GroupId { get; set; }

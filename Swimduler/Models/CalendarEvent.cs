@@ -23,7 +23,7 @@ namespace Swimduler.Models
 
         public string ThemeColor { get; set; }
 
-        public int LessonId { get; set; }
+        public int? LessonId { get; set; }
         public virtual Lesson Lesson { get; set; }
     }
 }
