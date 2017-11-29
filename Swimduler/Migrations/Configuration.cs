@@ -170,7 +170,7 @@ namespace Swimduler.Migrations
 
     //    private void SeedCalendarEvents(ApplicationDbContext context)
     //    {
-    //        string[] colors = { "green", "red", "yellow", "blue", "brown", "orange" };
+    //        string[] colors = { "green", "red", "gold", "blue", "brown", "orange" };
 
     //        var lessons = context.Lessons.Include("Group").ToList();
 

@@ -73,7 +73,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.BirthDate)
+            @{
+                var birthDisp = Model.BirthDate.ToString("d", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
+            }
+            @Html.DisplayFor(model => birthDisp)
         </dd>
 
         @*<dt>

@@ -8,9 +8,11 @@
     colors.Add(new SelectListItem() { Text = "Zielony", Value = "green" });
     colors.Add(new SelectListItem() { Text = "Czerwony", Value = "red" });
     colors.Add(new SelectListItem() { Text = "Niebieski", Value = "blue" });
-    colors.Add(new SelectListItem() { Text = "Zółty", Value = "yellow" });
+    colors.Add(new SelectListItem() { Text = "Zółty", Value = "gold" });
     colors.Add(new SelectListItem() { Text = "Czarny", Value = "black" });
 }
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 
 <h2>Edycja wybranej lekcji</h2>
 
@@ -80,3 +82,17 @@
 <div>
     @Html.ActionLink("Wróć do listy", "Index")
 </div>
+
+@section Scripts{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+            $(document).ready(function () {
+                $('#dtp').datetimepicker({
+                    locale: 'pl',
+                    format: 'DD-MMM-YYYY HH:mm'
+                });
+            })
+    </script>
+}

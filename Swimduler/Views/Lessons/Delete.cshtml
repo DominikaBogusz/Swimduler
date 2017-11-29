@@ -24,7 +24,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Beginning)
+            @{
+                var begginingDisp = Model.Beginning.ToString("dd-MMM-yyyy HH:mm (dddd)", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
+            }
+            @Html.DisplayFor(model => begginingDisp)
         </dd>
 
         <dt>
@@ -32,7 +35,11 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Duration)
+            @{
+                var min = (Model.Duration.Minutes > 9) ? Model.Duration.Minutes.ToString() : "0" + Model.Duration.Minutes.ToString();
+                var durationDisp = Model.Duration.Hours + "h " + min + "min";
+            }
+            @Html.DisplayFor(model => durationDisp)
         </dd>
 
         <dt>
@@ -47,8 +54,7 @@
             @Html.DisplayNameFor(model => model.ThemeColor)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ThemeColor)
+        <dd style="height: 20px; width: 40px; background-color: @Model.ThemeColor">
         </dd>
 
     </dl>

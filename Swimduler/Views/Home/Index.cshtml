@@ -75,7 +75,7 @@
                             <option value="green">Zielony</option>
                             <option value="red">Czerwony</option>
                             <option value="blue">Niebieski</option>
-                            <option value="yellow">Żółty</option>
+                            <option value="gold">Żółty</option>
                             <option value="black">Czarny</option>
                         </select>
                     </div>
@@ -121,7 +121,7 @@
                             GenerateCalendar(events);
                         },
                         error: function (error) {
-                            alert('Coś się spierniczyło');
+                            alert('Nie udało się wygenerować kalendarza.');
                         }
                     })
                 }
@@ -130,6 +130,13 @@
                     $('#calendar').fullCalendar('destroy');
                     $('#calendar').fullCalendar({
                         locale: 'pl',
+                        timeFormat: "HH:mm",
+                        displayEventEnd: {
+                            month: false,
+                            agendaWeek: true,
+                            agendaDay: true,
+                            'default': false
+                        },
                         contentHeight: 400,
                         defaultDate: new Date(),
                         header: {
@@ -195,7 +202,7 @@
                                 }
                             },
                             error: function () {
-                                alert('Coś się spierniczyło');
+                                alert('Nie udało się usunąć wydarzenia.');
                             }
                         })
                     }
@@ -217,27 +224,27 @@
                 }
                 $('#btnSave').click(function () {
                     if ($('#txtSubject').val().trim() == "") {
-                        alert('Nazwa wydarzenia jest wymagana');
+                        alert('Nazwa wydarzenia jest wymagana.');
                         return;
                     }
                     if ($('#txtStart').val().trim() == "") {
-                        alert('Data rozpoczęcia jest wymagana');
+                        alert('Data rozpoczęcia jest wymagana.');
                         return;
                     }
                     if ($('#txtEnd').val().trim() == "") {
-                        alert('Data zakończenia jest wymagana');
+                        alert('Data zakończenia jest wymagana.');
                         return;
                     }
                     else {
                         var startDate = moment($('#txtStart').val(), "DD-MMM-YYYY HH:mm").toDate();
                         var endDate = moment($('#txtEnd').val(), "DD-MMM-YYYY HH:mm").toDate();
                         if (startDate > endDate) {
-                            alert('Nieprawidłowa data zakończenia');
+                            alert('Nieprawidłowa data zakończenia.');
                             return;
                         }
                     }
 
-                    var data = {
+                    var e = {
                         Id: $('#hdEventID').val(),
                         Subject: $('#txtSubject').val().trim(),
                         Start: $('#txtStart').val().trim(),
@@ -245,13 +252,15 @@
                         Comments: $('#txtComments').val(),
                         ThemeColor: $('#ddThemeColor').val()
                     }
-                    SaveEvent(data);
+                    SaveEvent(e);
                 })
-                function SaveEvent(data) {
+                function SaveEvent(e) {
                     $.ajax({
                         type: "POST",
-                        url: '/home/SaveEvent',
-                        data: data,
+                        url: '/Home/SaveEvent',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        data: JSON.stringify(e),
                         success: function (data) {
                             if (data.status) {
                                 FetchEventAndRenderCalendar();
@@ -259,7 +268,7 @@
                             }
                         },
                         error: function () {
-                            alert('Coś się spierniczyło');
+                            alert('Nie udało się zapisać wydarzenia.');
                         }
                     })
                 }
