@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <label>Początek</label>
                         <div class="input-group date" id="dtp1">
-                            <input type="text" id="txtStart" class="form-control" />
+                            <input type="datetime" id="txtStart" class="form-control" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -58,7 +58,7 @@
                     <div class="form-group">
                         <label>Koniec</label>
                         <div class="input-group date" id="dtp2">
-                            <input type="text" id="txtEnd" class="form-control" />
+                            <input type="datetime" id="txtEnd" class="form-control" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -247,8 +247,8 @@
                     var e = {
                         Id: $('#hdEventID').val(),
                         Subject: $('#txtSubject').val().trim(),
-                        Start: $('#txtStart').val().trim(),
-                        End: $('#txtEnd').val().trim(),
+                        Start: startDate,
+                        End: endDate,
                         Comments: $('#txtComments').val(),
                         ThemeColor: $('#ddThemeColor').val()
                     }
@@ -270,7 +270,7 @@
                         error: function () {
                             alert('Nie udało się zapisać wydarzenia.');
                         }
-                    })
+                    }).responseJSON;
                 }
             })
     </script>

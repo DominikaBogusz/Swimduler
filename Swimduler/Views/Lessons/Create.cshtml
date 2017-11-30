@@ -29,7 +29,7 @@
                 @Html.LabelFor(model => model.Beginning, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <div class="input-group date" id="dtp">
-                        @Html.EditorFor(model => model.Beginning, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                        @Html.EditorFor(model => model.Beginning, new { htmlAttributes = new { @type = "datetime", @class = "form-control" } })
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
