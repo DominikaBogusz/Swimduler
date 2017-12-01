@@ -57,23 +57,14 @@ namespace Swimduler.Models
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if(value == null)
-            {
-                return new ValidationResult("Coś podziało się złego, żaden obiekt nie jest przekazywany do metody.");
-            }
-
             DateTime date;
             try
-            {
-                date = Convert.ToDateTime(value);
-            }
-            catch (NullReferenceException)
             {
                 date = DateTime.Parse(value.ToString(), System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
             }
             catch (Exception)
             {
-                return new ValidationResult("Coś podziało się złego, nie udało się przekonwertować obiektu na datę.");
+                return new ValidationResult("Nie udało się przekonwertować obiektu - " + value.ToString() + " - na datę.");
             }
 
             if (date >= FirstDate && date <= SecondDate)
