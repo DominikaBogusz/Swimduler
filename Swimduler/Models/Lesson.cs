@@ -11,7 +11,7 @@ namespace Swimduler.Models
         public int Id { get; set; }
 
         [Required]
-        [ValidateDateRange("1/1/2000", "1/1/2050")]
+        [ValidateDateRange("1/1/2000", "31/12/2050")]
         [DataType(DataType.DateTime)]
         [Display(Name = "Rozpoczęcie zajęć")]
         public DateTime Beginning { get; set; }
@@ -57,15 +57,7 @@ namespace Swimduler.Models
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime date;
-            try
-            {
-                date = DateTime.Parse(value.ToString(), System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
-            }
-            catch (Exception)
-            {
-                return new ValidationResult("Nie udało się przekonwertować obiektu - " + value.ToString() + " - na datę.");
-            }
+            DateTime date = Convert.ToDateTime(value);
 
             if (date >= FirstDate && date <= SecondDate)
             {
@@ -73,7 +65,7 @@ namespace Swimduler.Models
             }
             else
             {
-                return new ValidationResult("Data powinna być z zakresu od " + FirstDate.ToShortDateString() + " do " + SecondDate.ToShortDateString() + ".");
+                return new ValidationResult("Data powinna zawierać się w latach od " + FirstDate.Year + " do " + SecondDate.Year + " roku.");
             }
         }
     }
