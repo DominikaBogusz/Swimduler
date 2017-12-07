@@ -56,6 +56,14 @@
         <dd style="height: 20px; width: 40px; background-color: @Model.ThemeColor">
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.CalendarEvents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalendarEvents.Count)
+        </dd>
+
     </dl>
 </div>
 <p>

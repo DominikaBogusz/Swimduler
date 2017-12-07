@@ -32,7 +32,19 @@ namespace Swimduler.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var events = db.CalendarEvents.ToList();
+                //var events = db.CalendarEvents.ToList();
+
+                var events = db.CalendarEvents
+                        .Select(e => new
+                        {
+                            Id = e.Id,
+                            Subject = e.Subject,
+                            Comments = e.Comments,
+                            Start = e.Start,
+                            End = e.End,
+                            ThemeColor = e.ThemeColor
+                        }).ToList();
+
                 return new JsonResult { Data = events, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
         }
@@ -40,28 +52,8 @@ namespace Swimduler.Controllers
         [HttpPost]
         public JsonResult SaveEvent(CalendarEvent calendarEvent)
         {
-            var status = false;
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                if (calendarEvent.Id > 0)
-                {
-                    var reqEvent = db.CalendarEvents.Where(x => x.Id == calendarEvent.Id).FirstOrDefault();
-                    if (reqEvent != null)
-                    {
-                        reqEvent.Subject = calendarEvent.Subject;
-                        reqEvent.Start = calendarEvent.Start;
-                        reqEvent.End = calendarEvent.End;
-                        reqEvent.Comments = calendarEvent.Comments;
-                        reqEvent.ThemeColor = calendarEvent.ThemeColor;
-                    }
-                }
-                else
-                {
-                    db.CalendarEvents.Add(calendarEvent);
-                }
-                db.SaveChanges();
-                status = true;
-            }
+            var status = AddEventToDatabase(calendarEvent); 
+
             return new JsonResult { Data = new { status = status } };
         }
 
@@ -80,6 +72,33 @@ namespace Swimduler.Controllers
                 }
             }
             return new JsonResult { Data = new { status = status } };
+        }
+
+        [NonAction]
+        public bool AddEventToDatabase(CalendarEvent calendarEvent)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                if (calendarEvent.Id > 0)
+                {
+                    var reqEvent = db.CalendarEvents.Where(x => x.Id == calendarEvent.Id).FirstOrDefault();
+                    if (reqEvent != null)
+                    {
+                        reqEvent.Subject = calendarEvent.Subject;
+                        reqEvent.Start = calendarEvent.Start;
+                        reqEvent.End = calendarEvent.End;
+                        reqEvent.Comments = calendarEvent.Comments;
+                        reqEvent.ThemeColor = calendarEvent.ThemeColor;
+                        reqEvent.LessonId = calendarEvent.LessonId;
+                    }
+                }
+                else
+                {
+                    db.CalendarEvents.Add(calendarEvent);
+                }
+                db.SaveChanges();
+                return true;
+            }
         }
     }
 }

@@ -98,180 +98,182 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
     <script>
-            $(document).ready(function () {
-                var events = [];
-                var selectedEvent = null;
-                FetchEventAndRenderCalendar();
-                function FetchEventAndRenderCalendar() {
-                    events = [];
-                    $.ajax({
-                        type: "GET",
-                        url: "/home/GetEvents",
-                        success: function (data) {
-                            $.each(data, function (i, v) {
-                                events.push({
-                                    eventID: v.Id,
-                                    title: v.Subject,
-                                    comments: v.Comments,
-                                    start: moment(v.Start),
-                                    end: moment(v.End),
-                                    color: v.ThemeColor
-                                });
-                            })
-                            GenerateCalendar(events);
-                        },
-                        error: function (error) {
-                            alert('Nie udało się wygenerować kalendarza.');
-                        }
-                    })
-                }
-
-                function GenerateCalendar(events) {
-                    $('#calendar').fullCalendar('destroy');
-                    $('#calendar').fullCalendar({
-                        locale: 'pl',
-                        timeFormat: "HH:mm",
-                        displayEventEnd: {
-                            month: false,
-                            agendaWeek: true,
-                            agendaDay: true,
-                            'default': false
-                        },
-                        contentHeight: 400,
-                        defaultDate: new Date(),
-                        header: {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'month,basicWeek,basicDay,agenda'
-                        },
-                        allDaySlot: false,
-                        eventLimit: true,
-                        eventColor: 'gray',
-                        events: events,
-                        eventClick: function (calEvent, jsEvent, view) {
-                            selectedEvent = calEvent;
-                            $('#calendarModal #eventTitle').text(calEvent.title);
-                            var $details = $('<div/>');
-                            $details.append($('<p/>').html('<b>Początek: </b>' + calEvent.start.format("DD-MMM-YYYY HH:mm")));
-                            $details.append($('<p/>').html('<b>Koniec: </b>' + calEvent.end.format("DD-MMM-YYYY HH:mm")));
-                            $details.append($('<p/>').html('<b>Uwagi: </b>' + (calEvent.comments == null ? '(brak)' : calEvent.comments)));
-                            $('#calendarModal #pDetails').empty().html($details);
-                            $('#calendarModal').modal();
-                        },
-                        selectable: true,
-                        select: function (start, end) {
-                            selectedEvent = {
-                                eventID: 0,
-                                title: '',
-                                comments: '',
-                                start: start,
-                                end: end,
-                                color: ''
-                            };
-                            openAddEditForm();
-                            $('#calendar').fullCalendar('unselect');
-                        },
-                        editable: true,
-                        eventDrop: function (event) {
-                            var data = {
-                                Id: event.eventID,
-                                Subject: event.title,
-                                Start: event.start.format("DD-MMM-YYYY HH:mm"),
-                                End: event.end.format("DD-MMM-YYYY HH:mm"),
-                                Comments: event.comments,
-                                ThemeColor: event.color
-                            };
-                            SaveEvent(data);
-                        }
-                    });
-                }
-
-                $('#btnEdit').click(function () {
-                    openAddEditForm();
-                })
-                $('#btnDelete').click(function () {
-                    if (selectedEvent != null && confirm('Jesteś pewien, że chcesz usunąć to wydarzenie?')) {
-                        $.ajax({
-                            type: "POST",
-                            url: '/home/DeleteEvent',
-                            data: { 'eventID': selectedEvent.eventID },
-                            success: function (data) {
-                                if (data.status) {
-                                    FetchEventAndRenderCalendar();
-                                    $('#calendarModal').modal('hide');
-                                }
-                            },
-                            error: function () {
-                                alert('Nie udało się usunąć wydarzenia.');
-                            }
+        $(document).ready(function () {
+            var events = [];
+            var selectedEvent = null;
+            FetchEventAndRenderCalendar();
+            function FetchEventAndRenderCalendar() {
+                events = [];
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/GetEvents",
+                    success: function (data) {
+                        $.each(data, function (i, v) {
+                            events.push({
+                                eventID: v.Id,
+                                title: v.Subject,
+                                comments: v.Comments,
+                                start: moment(v.Start),
+                                end: moment(v.End),
+                                color: v.ThemeColor
+                            });
                         })
-                    }
+                        GenerateCalendar(events);
+                    },
+                    error: function (exception) { alert('Exception:' + exception.statusText) }
+                    //error: function (error) {
+                    //    alert('Nie udało się wygenerować kalendarza.');
+                    //}
                 })
-                $('#dtp1,#dtp2').datetimepicker({
-                    format: 'DD-MMM-YYYY HH:mm'
-                });
-                function openAddEditForm() {
-                    if (selectedEvent != null) {
-                        $('#hdEventID').val(selectedEvent.eventID);
-                        $('#txtSubject').val(selectedEvent.title);
-                        $('#txtStart').val(selectedEvent.start.format("DD-MMM-YYYY HH:mm"));
-                        $('#txtEnd').val(selectedEvent.end.format("DD-MMM-YYYY HH:mm"));
-                        $('#txtComments').val(selectedEvent.comments);
-                        $('#ddThemeColor').val(selectedEvent.color);
-                    }
-                    $('#calendarModal').modal('hide');
-                    $('#calendarModalSave').modal();
-                }
-                $('#btnSave').click(function () {
-                    if ($('#txtSubject').val().trim() == "") {
-                        alert('Nazwa wydarzenia jest wymagana.');
-                        return;
-                    }
-                    if ($('#txtStart').val().trim() == "") {
-                        alert('Data rozpoczęcia jest wymagana.');
-                        return;
-                    }
-                    if ($('#txtEnd').val().trim() == "") {
-                        alert('Data zakończenia jest wymagana.');
-                        return;
-                    }
-                    else {
-                        var startDate = moment($('#txtStart').val(), "DD-MMM-YYYY HH:mm").toDate();
-                        var endDate = moment($('#txtEnd').val(), "DD-MMM-YYYY HH:mm").toDate();
-                        if (startDate > endDate) {
-                            alert('Nieprawidłowa data zakończenia.');
-                            return;
-                        }
-                    }
+            }
 
-                    var e = {
-                        Id: $('#hdEventID').val(),
-                        Subject: $('#txtSubject').val().trim(),
-                        Start: startDate,
-                        End: endDate,
-                        Comments: $('#txtComments').val(),
-                        ThemeColor: $('#ddThemeColor').val()
+            function GenerateCalendar(events) {
+                $('#calendar').fullCalendar('destroy');
+                $('#calendar').fullCalendar({
+                    locale: 'pl',
+                    timeFormat: "HH:mm",
+                    displayEventEnd: {
+                        month: false,
+                        agendaWeek: true,
+                        agendaDay: true,
+                        'default': false
+                    },
+                    contentHeight: 400,
+                    defaultDate: new Date(),
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,basicWeek,basicDay,agenda'
+                    },
+                    allDaySlot: false,
+                    eventLimit: true,
+                    eventColor: 'gray',
+                    events: events,
+                    eventClick: function (calEvent, jsEvent, view) {
+                        selectedEvent = calEvent;
+                        $('#calendarModal #eventTitle').text(calEvent.title);
+                        var $details = $('<div/>');
+                        $details.append($('<p/>').html('<b>Początek: </b>' + calEvent.start.format("DD-MMM-YYYY HH:mm")));
+                        $details.append($('<p/>').html('<b>Koniec: </b>' + calEvent.end.format("DD-MMM-YYYY HH:mm")));
+                        $details.append($('<p/>').html('<b>Uwagi: </b>' + (calEvent.comments == null ? '(brak)' : calEvent.comments)));
+                        $('#calendarModal #pDetails').empty().html($details);
+                        $('#calendarModal').modal();
+                    },
+                    selectable: true,
+                    select: function (start, end) {
+                        selectedEvent = {
+                            eventID: 0,
+                            title: '',
+                            comments: '',
+                            start: start,
+                            end: end,
+                            color: ''
+                        };
+                        openAddEditForm();
+                        $('#calendar').fullCalendar('unselect');
+                    },
+                    editable: true,
+                    eventDrop: function (event) {
+                        var data = {
+                            Id: event.eventID,
+                            Subject: event.title,
+                            Start: event.start.format("DD-MMM-YYYY HH:mm"),
+                            End: event.end.format("DD-MMM-YYYY HH:mm"),
+                            Comments: event.comments,
+                            ThemeColor: event.color
+                        };
+                        SaveEvent(data);
                     }
-                    SaveEvent(e);
-                })
-                function SaveEvent(e) {
+                });
+            }
+
+            $('#btnEdit').click(function () {
+                openAddEditForm();
+            })
+            $('#btnDelete').click(function () {
+                if (selectedEvent != null && confirm('Jesteś pewien, że chcesz usunąć to wydarzenie?')) {
                     $.ajax({
                         type: "POST",
-                        url: '/Home/SaveEvent',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: 'json',
-                        data: JSON.stringify(e),
+                        url: '/home/DeleteEvent',
+                        data: { 'eventID': selectedEvent.eventID },
                         success: function (data) {
                             if (data.status) {
                                 FetchEventAndRenderCalendar();
-                                $('#calendarModalSave').modal('hide');
+                                $('#calendarModal').modal('hide');
                             }
                         },
                         error: function () {
-                            alert('Nie udało się zapisać wydarzenia.');
+                            alert('Nie udało się usunąć wydarzenia.');
                         }
-                    }).responseJSON;
+                    })
                 }
             })
-    </script>
+            $('#dtp1,#dtp2').datetimepicker({
+                format: 'DD-MMM-YYYY HH:mm'
+            });
+            function openAddEditForm() {
+                if (selectedEvent != null) {
+                    $('#hdEventID').val(selectedEvent.eventID);
+                    $('#txtSubject').val(selectedEvent.title);
+                    $('#txtStart').val(selectedEvent.start.format("DD-MMM-YYYY HH:mm"));
+                    $('#txtEnd').val(selectedEvent.end.format("DD-MMM-YYYY HH:mm"));
+                    $('#txtComments').val(selectedEvent.comments);
+                    $('#ddThemeColor').val(selectedEvent.color);
+                }
+                $('#calendarModal').modal('hide');
+                $('#calendarModalSave').modal();
+            }
+            $('#btnSave').click(function () {
+                if ($('#txtSubject').val().trim() == "") {
+                    alert('Nazwa wydarzenia jest wymagana.');
+                    return;
+                }
+                if ($('#txtStart').val().trim() == "") {
+                    alert('Data rozpoczęcia jest wymagana.');
+                    return;
+                }
+                if ($('#txtEnd').val().trim() == "") {
+                    alert('Data zakończenia jest wymagana.');
+                    return;
+                }
+                else {
+                    var startDate = moment($('#txtStart').val(), "DD-MMM-YYYY HH:mm").toDate();
+                    var endDate = moment($('#txtEnd').val(), "DD-MMM-YYYY HH:mm").toDate();
+                    if (startDate > endDate) {
+                        alert('Nieprawidłowa data zakończenia.');
+                        return;
+                    }
+                }
+
+                var e = {
+                    Id: $('#hdEventID').val(),
+                    Subject: $('#txtSubject').val().trim(),
+                    Start: startDate,
+                    End: endDate,
+                    Comments: $('#txtComments').val(),
+                    ThemeColor: $('#ddThemeColor').val()
+                }
+                SaveEvent(e);
+            })
+            function SaveEvent(e) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/SaveEvent',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify(e),
+                    success: function (data) {
+                        if (data.status) {
+                            FetchEventAndRenderCalendar();
+                            $('#calendarModalSave').modal('hide');
+                        }
+                    },
+                    error: function () {
+                        alert('Nie udało się zapisać wydarzenia.');
+                    }
+                }).responseJSON;
+            }
+        })
+</script>
+
 }

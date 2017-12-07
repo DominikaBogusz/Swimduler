@@ -54,6 +54,25 @@ namespace Swimduler.Controllers
             {
                 db.Lessons.Add(lesson);
                 db.SaveChanges();
+
+                var group = db.Groups.Include("Client_Groups").FirstOrDefault(l => l.Id == lesson.GroupId);
+
+                var newEvent = new CalendarEvent
+                {
+                    Subject = group.Name,
+                    Comments = "czas trwania: " + lesson.Duration.Hours + "h " + lesson.Duration.Minutes + "min, \n" +
+                        "cykl lekcji: " + lesson.Cycle + ", \n" +
+                        "wielkość grupy: " + group.Client_Groups.Count,
+                    Start = lesson.Beginning,
+                    End = lesson.Beginning + lesson.Duration,
+                    ThemeColor = lesson.ThemeColor,
+                    LessonId = lesson.Id
+                };
+
+                if (new HomeController().AddEventToDatabase(newEvent))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 return RedirectToAction("Index");
             }
 
