@@ -52,9 +52,49 @@ namespace Swimduler.Controllers
         [HttpPost]
         public JsonResult SaveEvent(CalendarEvent calendarEvent)
         {
-            var status = AddEventToDatabase(calendarEvent); 
+            bool status;
+
+            if (calendarEvent.Id > 0)
+            {
+                status = EditEventInDatabase(calendarEvent);
+            }
+            else
+            {
+                status = AddEventToDatabase(calendarEvent);
+            }
 
             return new JsonResult { Data = new { status = status } };
+        }
+
+        [NonAction]
+        public bool AddEventToDatabase(CalendarEvent calendarEvent)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.CalendarEvents.Add(calendarEvent);
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        [NonAction]
+        public bool EditEventInDatabase(CalendarEvent calendarEvent)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var reqEvent = db.CalendarEvents.Where(x => x.Id == calendarEvent.Id).FirstOrDefault();
+                if (reqEvent != null)
+                {
+                    reqEvent.Subject = calendarEvent.Subject;
+                    reqEvent.Start = calendarEvent.Start;
+                    reqEvent.End = calendarEvent.End;
+                    reqEvent.Comments = calendarEvent.Comments;
+                    reqEvent.ThemeColor = calendarEvent.ThemeColor;
+                    reqEvent.LessonId = reqEvent.LessonId;
+                }
+                db.SaveChanges();
+                return true;
+            }
         }
 
         [HttpPost]
@@ -72,33 +112,6 @@ namespace Swimduler.Controllers
                 }
             }
             return new JsonResult { Data = new { status = status } };
-        }
-
-        [NonAction]
-        public bool AddEventToDatabase(CalendarEvent calendarEvent)
-        {
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                if (calendarEvent.Id > 0)
-                {
-                    var reqEvent = db.CalendarEvents.Where(x => x.Id == calendarEvent.Id).FirstOrDefault();
-                    if (reqEvent != null)
-                    {
-                        reqEvent.Subject = calendarEvent.Subject;
-                        reqEvent.Start = calendarEvent.Start;
-                        reqEvent.End = calendarEvent.End;
-                        reqEvent.Comments = calendarEvent.Comments;
-                        reqEvent.ThemeColor = calendarEvent.ThemeColor;
-                        reqEvent.LessonId = calendarEvent.LessonId;
-                    }
-                }
-                else
-                {
-                    db.CalendarEvents.Add(calendarEvent);
-                }
-                db.SaveChanges();
-                return true;
-            }
         }
     }
 }
