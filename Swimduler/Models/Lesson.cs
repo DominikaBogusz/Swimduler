@@ -34,6 +34,10 @@ namespace Swimduler.Models
             Miesięczny = 3
         }
 
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Zakończenie cyklu")]
+        public DateTime? CycleEnd { get; set; }
+
         [Display(Name = "Kolor w kalendarzu")]
         public string ThemeColor { get; set; }
 

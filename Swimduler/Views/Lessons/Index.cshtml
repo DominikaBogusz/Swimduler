@@ -29,24 +29,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Group.Name)
             </td>
-            <td>@{
-                    var begginingDisp = item.Beginning.ToString("dd-MMM-yyyy HH:mm", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
-                }
-                @Html.DisplayFor(modelItem => begginingDisp)
-            </td>
             <td>
                 @{
-                    var min = (item.Duration.Minutes > 9) ? item.Duration.Minutes.ToString() : "0" + item.Duration.Minutes.ToString();
-                    var durationDisp = item.Duration.Hours + "h " + min + "min";
-                }
-                @Html.DisplayFor(modelItem => durationDisp)
-            </td>
-            <td>
-                @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+                var beginningDisp = item.Beginning.ToString("dd-MMM-yyyy HH:mm", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
+            }
+            @Html.DisplayFor(modelItem => beginningDisp)
+        </td>
+        <td>
+            @{
+                var min = (item.Duration.Minutes > 9) ? item.Duration.Minutes.ToString() : "0" + item.Duration.Minutes.ToString();
+                var durationDisp = item.Duration.Hours + "h " + min + "min";
+            }
+            @Html.DisplayFor(modelItem => durationDisp)
+        </td>
+        <td>
+            @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
+        </td>
+    </tr>
     }
 
 </table>

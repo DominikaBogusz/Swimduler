@@ -48,7 +48,7 @@ namespace Swimduler.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Beginning,Duration,Cycle,ThemeColor,GroupId")] Lesson lesson)
+        public ActionResult Create([Bind(Include = "Id,Beginning,Duration,Cycle,CycleEnd,ThemeColor,GroupId")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {

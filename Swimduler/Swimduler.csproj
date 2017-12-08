@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201711200904574_ErrorHandling.Designer.cs">
       <DependentUpon>201711200904574_ErrorHandling.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712080616446_CycleEndAdded.cs" />
+    <Compile Include="Migrations\201712080616446_CycleEndAdded.Designer.cs">
+      <DependentUpon>201712080616446_CycleEndAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CalendarEvent.cs" />
     <Compile Include="Models\Person.cs" />
@@ -331,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711200904574_ErrorHandling.resx">
       <DependentUpon>201711200904574_ErrorHandling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712080616446_CycleEndAdded.resx">
+      <DependentUpon>201712080616446_CycleEndAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
