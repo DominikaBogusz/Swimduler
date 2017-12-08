@@ -69,10 +69,22 @@ namespace Swimduler.Controllers
                     LessonId = lesson.Id
                 };
 
-                if (new HomeController().AddEventToDatabase(newEvent))
+                if (lesson.Cycle == Lesson.LessonCycle.Brak)
                 {
-                    return RedirectToAction("Index", "Home");
+                    if (new HomeController().AddEventToDatabase(newEvent))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
+                else
+                {
+                    var newEvents = FindOccurrences(newEvent, lesson.Cycle, lesson.CycleEnd);
+                    if (new HomeController().AddEventsToDatabase(newEvents))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -146,6 +158,79 @@ namespace Swimduler.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private List<CalendarEvent> FindOccurrences(CalendarEvent firstEvent, Lesson.LessonCycle cycle, DateTime? endDate)
+        {
+            var result = new List<CalendarEvent> { firstEvent };
+
+            if (endDate == null)
+            {
+                return result;
+            }
+
+            var currentStart = firstEvent.Start;
+            var currentEnd = firstEvent.End;
+
+            switch (cycle)
+            {
+                case Lesson.LessonCycle.Tygodniowy:
+                    while ((currentStart = currentStart.AddDays(7)) <= endDate)
+                    {
+                        currentEnd = currentEnd.AddDays(7);
+
+                        var newEvent = new CalendarEvent
+                        {
+                            Subject = firstEvent.Subject,
+                            Comments = firstEvent.Comments,
+                            Start = currentStart,
+                            End = currentEnd,
+                            ThemeColor = firstEvent.ThemeColor,
+                            LessonId = firstEvent.LessonId
+                        };
+
+                        result.Add(newEvent);
+                    }
+                    break;
+                case Lesson.LessonCycle.Dwutygodniowy:
+                    while ((currentStart = currentStart.AddDays(14)) <= endDate)
+                    {
+                        currentEnd = currentEnd.AddDays(14);
+
+                        var newEvent = new CalendarEvent
+                        {
+                            Subject = firstEvent.Subject,
+                            Comments = firstEvent.Comments,
+                            Start = currentStart,
+                            End = currentEnd,
+                            ThemeColor = firstEvent.ThemeColor,
+                            LessonId = firstEvent.LessonId
+                        };
+
+                        result.Add(newEvent);
+                    }
+                    break;
+                case Lesson.LessonCycle.Miesięczny:
+                    while ((currentStart = currentStart.AddDays(28)) <= endDate)
+                    {
+                        currentEnd = currentEnd.AddDays(28);
+
+                        var newEvent = new CalendarEvent
+                        {
+                            Subject = firstEvent.Subject,
+                            Comments = firstEvent.Comments,
+                            Start = currentStart,
+                            End = currentEnd,
+                            ThemeColor = firstEvent.ThemeColor,
+                            LessonId = firstEvent.LessonId
+                        };
+
+                        result.Add(newEvent);
+                    }
+                    break;
+            }
+
+            return result;
         }
     }
 }

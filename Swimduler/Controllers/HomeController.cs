@@ -78,6 +78,17 @@ namespace Swimduler.Controllers
         }
 
         [NonAction]
+        public bool AddEventsToDatabase(List<CalendarEvent> calendarEvents)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                db.CalendarEvents.AddRange(calendarEvents);
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        [NonAction]
         public bool EditEventInDatabase(CalendarEvent calendarEvent)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
