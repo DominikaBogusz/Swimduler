@@ -146,6 +146,10 @@ namespace Swimduler.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Lesson lesson = db.Lessons.Find(id);
+
+            var referencedEvents = db.CalendarEvents.Where(x => x.LessonId == lesson.Id).ToList();
+            db.CalendarEvents.RemoveRange(referencedEvents);
+
             db.Lessons.Remove(lesson);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -194,7 +198,7 @@ namespace Swimduler.Controllers
             var currentStart = firstEvent.Start;
             var currentEnd = firstEvent.End;
 
-            while ((currentStart = currentStart.AddDays(cycleDays)) <= endDate)
+            while ((currentStart = currentStart.AddDays(cycleDays)).Date <= endDate.Value.Date)
             {
                 currentEnd = currentEnd.AddDays(cycleDays);
 

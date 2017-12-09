@@ -50,6 +50,21 @@
             @Html.DisplayFor(model => model.Cycle)
         </dd>
 
+        <dt class="cycleEnd" style="display: none;">
+            @Html.DisplayNameFor(model => model.CycleEnd)
+        </dt>
+
+        <dd class="cycleEnd" style="display: none;">
+            @{
+                var endingDisp = "Brak";
+                if (Model.Cycle != Swimduler.Models.Lesson.LessonCycle.Brak)
+                {
+                    endingDisp = Model.CycleEnd.Value.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
+                }
+            }
+            @Html.DisplayFor(model => endingDisp)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.ThemeColor)
         </dt>
@@ -78,3 +93,17 @@
         </div>
     }
 </div>
+
+@section Scripts{
+
+    <script>
+        $(function () {
+            if ($('#cycle').text().trim() != 'Brak') {
+                $('.cycleEnd').show();
+            } else {
+                $('.cycleEnd').hide();
+            }
+    });
+    </script>
+
+}

@@ -25,12 +25,12 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                @{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Group.Name)
+        </td>
+        <td>
+            @{
                 var beginningDisp = item.Beginning.ToString("dd-MMM-yyyy HH:mm", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
             }
             @Html.DisplayFor(modelItem => beginningDisp)
