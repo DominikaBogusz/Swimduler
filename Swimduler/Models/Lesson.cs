@@ -45,6 +45,7 @@ namespace Swimduler.Models
         public int GroupId { get; set; }
         public virtual Group Group { get; set; }
 
+        [Display(Name = "Powiązane wydarzenia")]
         public virtual ICollection<CalendarEvent> CalendarEvents { get; set; }
     }
 

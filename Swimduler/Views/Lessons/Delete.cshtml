@@ -25,9 +25,9 @@
 
         <dd>
             @{
-                var begginingDisp = Model.Beginning.ToString("dd-MMM-yyyy HH:mm (dddd)", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
+                var beginningDisp = Model.Beginning.ToString("dd-MMM-yyyy HH:mm (dddd)", System.Globalization.CultureInfo.CreateSpecificCulture("pl-PL"));
             }
-            @Html.DisplayFor(model => begginingDisp)
+            @Html.DisplayFor(model => beginningDisp)
         </dd>
 
         <dt>
@@ -55,6 +55,14 @@
         </dt>
 
         <dd style="height: 20px; width: 40px; background-color: @Model.ThemeColor">
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalendarEvents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalendarEvents.Count)
         </dd>
 
     </dl>

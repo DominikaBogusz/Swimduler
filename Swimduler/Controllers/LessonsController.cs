@@ -160,9 +160,31 @@ namespace Swimduler.Controllers
             base.Dispose(disposing);
         }
 
+        [NonAction]
         private List<CalendarEvent> FindOccurrences(CalendarEvent firstEvent, Lesson.LessonCycle cycle, DateTime? endDate)
         {
-            var result = new List<CalendarEvent> { firstEvent };
+            if (endDate == null)
+            {
+                return null;
+            }
+
+            switch (cycle)
+            {
+                case Lesson.LessonCycle.Tygodniowy:
+                    return GetEventsWithinCycle(7, firstEvent, endDate);
+                case Lesson.LessonCycle.Dwutygodniowy:
+                    return GetEventsWithinCycle(14, firstEvent, endDate);
+                case Lesson.LessonCycle.Miesięczny:
+                    return GetEventsWithinCycle(28, firstEvent, endDate);
+            }
+
+            return null;
+        }
+
+        [NonAction]
+        private List<CalendarEvent> GetEventsWithinCycle(double cycleDays, CalendarEvent firstEvent, DateTime? endDate)
+        {
+            var result = new List<CalendarEvent>() { firstEvent };
 
             if (endDate == null)
             {
@@ -172,65 +194,25 @@ namespace Swimduler.Controllers
             var currentStart = firstEvent.Start;
             var currentEnd = firstEvent.End;
 
-            switch (cycle)
+            while ((currentStart = currentStart.AddDays(cycleDays)) <= endDate)
             {
-                case Lesson.LessonCycle.Tygodniowy:
-                    while ((currentStart = currentStart.AddDays(7)) <= endDate)
-                    {
-                        currentEnd = currentEnd.AddDays(7);
+                currentEnd = currentEnd.AddDays(cycleDays);
 
-                        var newEvent = new CalendarEvent
-                        {
-                            Subject = firstEvent.Subject,
-                            Comments = firstEvent.Comments,
-                            Start = currentStart,
-                            End = currentEnd,
-                            ThemeColor = firstEvent.ThemeColor,
-                            LessonId = firstEvent.LessonId
-                        };
+                var newEvent = new CalendarEvent
+                {
+                    Subject = firstEvent.Subject,
+                    Comments = firstEvent.Comments,
+                    Start = currentStart,
+                    End = currentEnd,
+                    ThemeColor = firstEvent.ThemeColor,
+                    LessonId = firstEvent.LessonId
+                };
 
-                        result.Add(newEvent);
-                    }
-                    break;
-                case Lesson.LessonCycle.Dwutygodniowy:
-                    while ((currentStart = currentStart.AddDays(14)) <= endDate)
-                    {
-                        currentEnd = currentEnd.AddDays(14);
-
-                        var newEvent = new CalendarEvent
-                        {
-                            Subject = firstEvent.Subject,
-                            Comments = firstEvent.Comments,
-                            Start = currentStart,
-                            End = currentEnd,
-                            ThemeColor = firstEvent.ThemeColor,
-                            LessonId = firstEvent.LessonId
-                        };
-
-                        result.Add(newEvent);
-                    }
-                    break;
-                case Lesson.LessonCycle.Miesięczny:
-                    while ((currentStart = currentStart.AddDays(28)) <= endDate)
-                    {
-                        currentEnd = currentEnd.AddDays(28);
-
-                        var newEvent = new CalendarEvent
-                        {
-                            Subject = firstEvent.Subject,
-                            Comments = firstEvent.Comments,
-                            Start = currentStart,
-                            End = currentEnd,
-                            ThemeColor = firstEvent.ThemeColor,
-                            LessonId = firstEvent.LessonId
-                        };
-
-                        result.Add(newEvent);
-                    }
-                    break;
+                result.Add(newEvent);
             }
 
             return result;
         }
+
     }
 }
