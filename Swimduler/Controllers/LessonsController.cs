@@ -55,19 +55,7 @@ namespace Swimduler.Controllers
                 db.Lessons.Add(lesson);
                 db.SaveChanges();
 
-                var group = db.Groups.Include("Client_Groups").FirstOrDefault(l => l.Id == lesson.GroupId);
-
-                var newEvent = new CalendarEvent
-                {
-                    Subject = group.Name,
-                    Comments = "czas trwania: " + lesson.Duration.Hours + "h " + lesson.Duration.Minutes + "min, \n" +
-                        "cykl lekcji: " + lesson.Cycle + ", \n" +
-                        "wielkość grupy: " + group.Client_Groups.Count,
-                    Start = lesson.Beginning,
-                    End = lesson.Beginning + lesson.Duration,
-                    ThemeColor = lesson.ThemeColor,
-                    LessonId = lesson.Id
-                };
+                var newEvent = CreateEventFromLesson(lesson);
 
                 if (lesson.Cycle == Lesson.LessonCycle.Brak)
                 {
@@ -84,7 +72,6 @@ namespace Swimduler.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                 }
-
                 return RedirectToAction("Index");
             }
 
@@ -113,12 +100,32 @@ namespace Swimduler.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Beginning,Duration,Cycle,ThemeColor,GroupId")] Lesson lesson)
+        public ActionResult Edit([Bind(Include = "Id,Beginning,Duration,Cycle,CycleEnd,ThemeColor,GroupId")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(lesson).State = EntityState.Modified;
+                var referencedEvents = db.CalendarEvents.Where(x => x.LessonId == lesson.Id).ToList();
+                db.CalendarEvents.RemoveRange(referencedEvents);
                 db.SaveChanges();
+
+                var newEvent = CreateEventFromLesson(lesson);
+
+                if (lesson.Cycle == Lesson.LessonCycle.Brak)
+                {
+                    if (new HomeController().AddEventToDatabase(newEvent))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    var newEvents = FindOccurrences(newEvent, lesson.Cycle, lesson.CycleEnd);
+                    if (new HomeController().AddEventsToDatabase(newEvents))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.GroupId = new SelectList(db.Groups, "Id", "Name", lesson.GroupId);
@@ -162,6 +169,26 @@ namespace Swimduler.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [NonAction]
+        private CalendarEvent CreateEventFromLesson(Lesson lesson)
+        {
+            var group = db.Groups.Include("Client_Groups").FirstOrDefault(l => l.Id == lesson.GroupId);
+
+            var newEvent = new CalendarEvent
+            {
+                Subject = group.Name,
+                Comments = "czas trwania: " + lesson.Duration.Hours + "h " + lesson.Duration.Minutes + "min, \n" +
+                    "cykl lekcji: " + lesson.Cycle + ", \n" +
+                    "wielkość grupy: " + group.Client_Groups.Count,
+                Start = lesson.Beginning,
+                End = lesson.Beginning + lesson.Duration,
+                ThemeColor = lesson.ThemeColor,
+                LessonId = lesson.Id
+            };
+
+            return newEvent;
         }
 
         [NonAction]

@@ -120,10 +120,9 @@
                         })
                         GenerateCalendar(events);
                     },
-                    error: function (exception) { alert('Exception:' + exception.statusText) }
-                    //error: function (error) {
-                    //    alert('Nie udało się wygenerować kalendarza.');
-                    //}
+                    error: function (error) {
+                        alert('Nie udało się wygenerować kalendarza.');
+                    }
                 })
             }
 

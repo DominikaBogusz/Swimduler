@@ -10,6 +10,8 @@
     colors.Add(new SelectListItem() { Text = "Niebieski", Value = "blue" });
     colors.Add(new SelectListItem() { Text = "Zółty", Value = "gold" });
     colors.Add(new SelectListItem() { Text = "Czarny", Value = "black" });
+
+    var cycleEnd = Model.CycleEnd.HasValue ? Model.CycleEnd.Value : Model.Beginning;
 }
 
 <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -109,10 +111,14 @@
             }
         });
 
+        var beginDate = moment("@Model.Beginning", "DD.MM.YYYY HH:mm:ss").toDate();
+        var endDate = moment("@cycleEnd", "DD.MM.YYYY HH:mm:ss").toDate();
+
         $(document).ready(function () {
             $('#dtp').datetimepicker({
                 locale: 'pl',
                 format: 'DD-MMM-YYYY HH:mm',
+                date: beginDate,
             }).on('dp.change', function (e) {
                 $('#dtpEnding').data("DateTimePicker").minDate(e.date);
                 $('#dtpEnding').data("DateTimePicker").maxDate(moment(e.date).add(40, 'year'));
@@ -120,7 +126,8 @@
 
             $('#dtpEnding').datetimepicker({
                 locale: 'pl',
-                format: 'DD-MMM-YYYY'
+                format: 'DD-MMM-YYYY',
+                date: endDate,
             });
 
             $('select[name=Cycle]').change(function () {
