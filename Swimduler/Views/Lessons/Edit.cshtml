@@ -63,7 +63,7 @@
                 <div class="input-group date" id="dtpEnding">
                     @Html.EditorFor(model => model.CycleEnd, new { htmlAttributes = new { @type = "datetime", @class = "form-control" } })
                     <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="glyphicon glyphicon-calendar" id="dtpEndingIcon"></span>
                     </span>
                 </div>
                 @Html.ValidationMessageFor(model => model.CycleEnd, "", new { @class = "text-danger" })
@@ -103,6 +103,12 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
     <script>
+
+        var beginDate = moment("@Model.Beginning", "DD.MM.YYYY HH:mm:ss").toDate();
+        var endDate = moment("@cycleEnd", "DD.MM.YYYY HH:mm:ss").toDate();
+        var initialMinDate = moment(new Date().setMinutes(00)).add(1, 'hour').add(-50, 'year');
+        var initialMaxDate = moment(new Date().setMinutes(00)).add(1, 'hour').add(50, 'year');
+
         $(function () {
             if ($('select[name=Cycle]').val() != '0') {
                 $('#cycleEndDiv').show();
@@ -111,23 +117,31 @@
             }
         });
 
-        var beginDate = moment("@Model.Beginning", "DD.MM.YYYY HH:mm:ss").toDate();
-        var endDate = moment("@cycleEnd", "DD.MM.YYYY HH:mm:ss").toDate();
-
         $(document).ready(function () {
+
             $('#dtp').datetimepicker({
                 locale: 'pl',
                 format: 'DD-MMM-YYYY HH:mm',
                 date: beginDate,
+                minDate: initialMinDate,
+                maxDate: initialMaxDate
             }).on('dp.change', function (e) {
-                $('#dtpEnding').data("DateTimePicker").minDate(e.date);
-                $('#dtpEnding').data("DateTimePicker").maxDate(moment(e.date).add(40, 'year'));
+                $('#dtpEnding').data("DateTimePicker").minDate($('#dtp').data("DateTimePicker").date());
             });
 
             $('#dtpEnding').datetimepicker({
                 locale: 'pl',
                 format: 'DD-MMM-YYYY',
                 date: endDate,
+                minDate: initialMinDate,
+                maxDate: initialMaxDate
+            }).on('dp.change', function (e) {
+                $('#dtp').data("DateTimePicker").maxDate(e.date);
+            });
+
+            $('#dtpEndingIcon').click(function () {
+                $('#dtpEnding').data("DateTimePicker").minDate($('#dtp').data("DateTimePicker").date());
+                $('#dtpEnding').data("DateTimePicker").maxDate($('#dtp').data("DateTimePicker").date().add(50, 'year'));
             });
 
             $('select[name=Cycle]').change(function () {
@@ -135,6 +149,8 @@
                     $('#cycleEndDiv').slideDown();
                 } else {
                     $('#cycleEndDiv').slideUp();
+                    $('#dtp').data("DateTimePicker").minDate(initialMinDate);
+                    $('#dtp').data("DateTimePicker").maxDate(initialMaxDate);
                 }
             });
         });

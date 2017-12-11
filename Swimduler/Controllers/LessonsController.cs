@@ -52,12 +52,15 @@ namespace Swimduler.Controllers
         {
             if (ModelState.IsValid)
             {
+                var isCyclic = lesson.Cycle == Lesson.LessonCycle.Brak;
+                if (isCyclic) lesson.CycleEnd = null;
+
                 db.Lessons.Add(lesson);
                 db.SaveChanges();
 
                 var newEvent = CreateEventFromLesson(lesson);
 
-                if (lesson.Cycle == Lesson.LessonCycle.Brak)
+                if (isCyclic)
                 {
                     if (new HomeController().AddEventToDatabase(newEvent))
                     {
