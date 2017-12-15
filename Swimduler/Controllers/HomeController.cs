@@ -32,8 +32,6 @@ namespace Swimduler.Controllers
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                //var events = db.CalendarEvents.ToList();
-
                 var events = db.CalendarEvents
                         .Select(e => new
                         {

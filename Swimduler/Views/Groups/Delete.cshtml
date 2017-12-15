@@ -8,7 +8,7 @@
 
 <h3>Jesteś pewien, że chcesz usunąć wybrany wpis?</h3>
 <div>
-    
+    <h5 class="text-warning">Usunięcie grupy spowoduje skasowanie powiązanych z nią lekcji wraz z wydarzeniami.</h5>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -17,6 +17,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Lessons)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lessons.Count)
         </dd>
 
     </dl>

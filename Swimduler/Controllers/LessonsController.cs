@@ -108,7 +108,7 @@ namespace Swimduler.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(lesson).State = EntityState.Modified;
-                var referencedEvents = db.CalendarEvents.Where(x => x.LessonId == lesson.Id).ToList();
+                var referencedEvents = db.CalendarEvents.Where(x => x.LessonId == lesson.Id);
                 db.CalendarEvents.RemoveRange(referencedEvents);
                 db.SaveChanges();
 
@@ -157,7 +157,7 @@ namespace Swimduler.Controllers
         {
             Lesson lesson = db.Lessons.Find(id);
 
-            var referencedEvents = db.CalendarEvents.Where(x => x.LessonId == lesson.Id).ToList();
+            var referencedEvents = db.CalendarEvents.Where(x => x.LessonId == lesson.Id);
             db.CalendarEvents.RemoveRange(referencedEvents);
 
             db.Lessons.Remove(lesson);

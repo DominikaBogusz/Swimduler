@@ -11,11 +11,12 @@ namespace Swimduler.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Grupa")]
+        [Display(Name = "Nazwa grupy")]
         public string Name { get; set; }
 
-        public virtual ICollection<Client_Group> Client_Groups { get; set; }
-
+        [Display(Name = "Powiązane lekcje")]
         public virtual ICollection<Lesson> Lessons { get; set; }
+
+        public virtual ICollection<Client_Group> Client_Groups { get; set; }
     }
 }

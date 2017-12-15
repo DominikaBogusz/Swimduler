@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Swimduler.Models;
+using Swimduler.Models.Views;
 
 namespace Swimduler.Controllers
 {
@@ -32,7 +33,31 @@ namespace Swimduler.Controllers
             {
                 return HttpNotFound();
             }
-            return View(group);
+            var results = from c in db.Clients
+                          select new
+                          {
+                              c.Id,
+                              c.FirstName,
+                              c.SecondName,
+                              Checked = ((from cg in db.Client_Groups
+                                          where (cg.GroupId == id) && (cg.ClientId == c.Id)
+                                          select cg).Count() > 0)
+                          };
+
+            var viewModel = new GroupsViewModel();
+
+            viewModel.Id = id.Value;
+            viewModel.Name = group.Name;
+
+            var checkBoxList = new List<CheckBoxViewModel>();
+            foreach (var item in results)
+            {
+                checkBoxList.Add(new CheckBoxViewModel { Id = item.Id, Name = item.FirstName + " " + item.SecondName, Checked = item.Checked });
+            }
+
+            viewModel.Clients = checkBoxList;
+
+            return View(viewModel);
         }
 
         // GET: Groups/Create
@@ -70,7 +95,32 @@ namespace Swimduler.Controllers
             {
                 return HttpNotFound();
             }
-            return View(group);
+
+            var results = from c in db.Clients
+                          select new
+                          {
+                              c.Id,
+                              c.FirstName,
+                              c.SecondName,
+                              Checked = ((from cg in db.Client_Groups
+                                          where (cg.GroupId == id) && (cg.ClientId == c.Id)
+                                          select cg).Count() > 0)
+                          };
+
+            var viewModel = new GroupsViewModel();
+
+            viewModel.Id = id.Value;
+            viewModel.Name = group.Name;
+
+            var checkBoxList = new List<CheckBoxViewModel>();
+            foreach(var item in results)
+            {
+                checkBoxList.Add(new CheckBoxViewModel { Id = item.Id, Name = item.FirstName + " " + item.SecondName, Checked = item.Checked });
+            }
+
+            viewModel.Clients = checkBoxList;
+
+            return View(viewModel);
         }
 
         // POST: Groups/Edit/5
@@ -78,11 +128,30 @@ namespace Swimduler.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Group group)
+        public ActionResult Edit(GroupsViewModel group)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(group).State = EntityState.Modified;
+                var reqGroup = db.Groups.Find(group.Id);
+
+                reqGroup.Name = group.Name;
+
+                foreach (var cg in db.Client_Groups)
+                {
+                    if(cg.GroupId == group.Id)
+                    {
+                        db.Entry(cg).State = EntityState.Deleted;
+                    }
+                }
+
+                foreach (var c in group.Clients)
+                {
+                    if (c.Checked)
+                    {
+                        db.Client_Groups.Add(new Client_Group { ClientId = c.Id, GroupId = group.Id });
+                    }
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -110,6 +179,25 @@ namespace Swimduler.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Group group = db.Groups.Find(id);
+
+            foreach (var cg in db.Client_Groups)
+            {
+                if (cg.GroupId == group.Id)
+                {
+                    db.Entry(cg).State = EntityState.Deleted;
+                }
+            }
+
+            var relatedLessons = db.Lessons.Include("CalendarEvents").Where(l => l.GroupId == group.Id);
+
+            foreach (var l in relatedLessons)
+            {
+                var referencedEvents = l.CalendarEvents.Where(x => x.LessonId == l.Id);
+                db.CalendarEvents.RemoveRange(referencedEvents);
+
+                db.Lessons.Remove(l);
+            }
+
             db.Groups.Remove(group);
             db.SaveChanges();
             return RedirectToAction("Index");

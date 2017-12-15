@@ -1,4 +1,4 @@
-﻿@model Swimduler.Models.Group
+﻿@model Swimduler.Models.Views.GroupsViewModel
 
 @{
     ViewBag.Title = "Szczegóły wybranej grupy";
@@ -16,6 +16,20 @@
 
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clients)
+        </dt>
+
+        <dd>
+            @foreach(var c in Model.Clients)
+            {
+                if (c.Checked)
+                {
+                    <div>@c.Name</div>
+                }
+            }
         </dd>
 
     </dl>
