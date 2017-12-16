@@ -62,7 +62,7 @@ namespace Swimduler.Controllers
 
                 if (isCyclic)
                 {
-                    if (new HomeController().AddEventToDatabase(newEvent))
+                    if (new CalendarController().AddEventToDatabase(newEvent))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -70,7 +70,7 @@ namespace Swimduler.Controllers
                 else
                 {
                     var newEvents = FindOccurrences(newEvent, lesson.Cycle, lesson.CycleEnd);
-                    if (new HomeController().AddEventsToDatabase(newEvents))
+                    if (new CalendarController().AddEventsToDatabase(newEvents))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -116,7 +116,7 @@ namespace Swimduler.Controllers
 
                 if (lesson.Cycle == Lesson.LessonCycle.Brak)
                 {
-                    if (new HomeController().AddEventToDatabase(newEvent))
+                    if (new CalendarController().AddEventToDatabase(newEvent))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -124,7 +124,7 @@ namespace Swimduler.Controllers
                 else
                 {
                     var newEvents = FindOccurrences(newEvent, lesson.Cycle, lesson.CycleEnd);
-                    if (new HomeController().AddEventsToDatabase(newEvents))
+                    if (new CalendarController().AddEventsToDatabase(newEvents))
                     {
                         return RedirectToAction("Index", "Home");
                     }
