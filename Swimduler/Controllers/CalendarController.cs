@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Swimduler.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CalendarController : Controller
     {
         // GET: Calendar

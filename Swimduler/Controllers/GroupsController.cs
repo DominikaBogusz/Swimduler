@@ -11,6 +11,7 @@ using Swimduler.Models.Views;
 
 namespace Swimduler.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GroupsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

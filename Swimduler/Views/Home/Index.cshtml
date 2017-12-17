@@ -9,13 +9,25 @@
 
 <div class="row">
     <div class="col-md-4">
-    @if (Request.IsAuthenticated)
+    @if (User.IsInRole("Admin"))
     {
         <h2>Witaj!</h2>
         <p>
             Możesz już korzystać z wygodnego kalendarza oraz zarządzać swoimi lekcjami, grupami zajęciowymi oraz klientami.
         </p>
         <p>@Html.ActionLink("Przejdź do kalendarza...", "Index", "Calendar")</p>
+    }
+    else if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+            @Html.AntiForgeryToken()
+            <h2>Witaj!</h2>
+            <p>
+                ... i wybacz, ale funkcjonalności dla zwykłego użytkownika nie są w tej chwili dostępne. Zapraszamy za jakiś czas.
+            </p>
+            <p><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj się...</a></p>
+        }
     }
     else
     {

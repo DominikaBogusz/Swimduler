@@ -10,6 +10,7 @@ using Swimduler.Models;
 
 namespace Swimduler.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class LessonsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -22,10 +22,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Kalendarz", "Index", "Calendar")</li>
-                    <li>@Html.ActionLink("Lekcje", "Index", "Lessons")</li>
-                    <li>@Html.ActionLink("Grupy", "Index", "Groups")</li>
-                    <li>@Html.ActionLink("Klienci", "Index", "Clients")</li>
+                    @if(User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Kalendarz", "Index", "Calendar")</li>
+                        <li>@Html.ActionLink("Lekcje", "Index", "Lessons")</li>
+                        <li>@Html.ActionLink("Grupy", "Index", "Groups")</li>
+                        <li>@Html.ActionLink("Klienci", "Index", "Clients")</li>
+                    }
                     <li>@Html.ActionLink("O aplikacji", "About", "Home")</li>
                     <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
                 </ul>
