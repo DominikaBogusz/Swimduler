@@ -12,14 +12,13 @@
 @if (!Request.IsAuthenticated)
 {
     <h2>@ViewBag.Title</h2>
+    <hr />
     <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
@@ -48,9 +47,13 @@
                         <input type="submit" value="Zaloguj się" class="btn btn-default" />
                     </div>
                 </div>
-                <p>
-                    @Html.ActionLink("Zarejestruj się jako nowy użytkownik", "Register")
-                </p>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <p>
+                            @Html.ActionLink("Zarejestruj się jako nowy użytkownik", "Register")
+                        </p>
+                    </div>
+                </div>
                 @* Włącz to ustawienie po włączeniu potwierdzenia konta dla funkcji resetowania hasła
                     <p>
                         @Html.ActionLink("Nie pamiętasz hasła?", "ForgotPassword")

@@ -139,7 +139,7 @@
                         agendaDay: true,
                         'default': false
                     },
-                    contentHeight: 500,
+                    contentHeight: 650,
                     defaultDate: new Date(),
                     header: {
                         left: 'prev,next today',
@@ -259,7 +259,7 @@
             function SaveEvent(e) {
                 $.ajax({
                     type: "POST",
-                    url: '/Home/SaveEvent',
+                    url: '/Calendar/SaveEvent',
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     data: JSON.stringify(e),
