@@ -192,6 +192,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LessonsController.cs" />
@@ -314,6 +315,8 @@
     <Content Include="Views\Calendar\Index.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\CustomError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
